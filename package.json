@@ -73,5 +73,7 @@
     "*.{js,css,json,md}": [
       "prettier --write"
     ]
+  },"resolutions": {
+  "cross-fetch": "2.2.2"
   }
 }
