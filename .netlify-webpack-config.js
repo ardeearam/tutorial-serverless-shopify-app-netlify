@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 
 module.exports = {
-  mode: "development",
+  // Uncomment to debug netlify
+  // mode: "development",
 };
