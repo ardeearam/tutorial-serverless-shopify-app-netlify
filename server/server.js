@@ -94,11 +94,8 @@ if (!process.env.REACT_APP_SERVERLESS) {
   app.listen(port, () => {
     console.log(`> Ready on http://localhost:${port}`);
   });
-} else {
-  //app.handler = serverless(app);
-  //module.exports = app;
-  //module.exports.handler = serverless(app);
 }
+
 const handler = serverless(app);
 export default app;
 export { handler };
