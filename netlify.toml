@@ -1,0 +1,4 @@
+[build]
+  publish = "frontend/build"
+  command = "cd react && npm install && npm run build && cd .. && npm install && npm run build"
+  functions = "server/functions"
