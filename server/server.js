@@ -98,9 +98,10 @@ if (!process.env.REACT_APP_SERVERLESS) {
   });
 } else {
   app.handler = serverless(app);
-  export default app;
   //module.exports = app;
   //module.exports.handler = serverless(app);
 }
+
+export default app;
 
 //});
