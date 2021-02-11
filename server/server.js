@@ -70,13 +70,10 @@ backend.use(
   })
 );
 
-//router.get("(.*)", verifyRequest(), async (ctx, next) => {
-//ctx.body = ':-)';
-//ctx.res.statusCode = 200;
+//router.get("(.*)", verifyRequest(), async (ctx) => {
 //await handle(ctx.req, ctx.res);
 //ctx.respond = false;
 //ctx.res.statusCode = 200;
-// await next();
 //});
 
 router.get("/ping", async (ctx) => {
