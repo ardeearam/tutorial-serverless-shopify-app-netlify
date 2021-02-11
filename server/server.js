@@ -7,6 +7,7 @@ import Koa from "koa";
 //import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
+import proxy from "koa-proxy";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -19,6 +20,7 @@ const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
 //app.prepare().then(() => {
 const server = new Koa();
 const router = new Router();
+const backendPath = "";
 server.use(
   session(
     {
@@ -61,6 +63,11 @@ server.use(
 
 server.use(router.allowedMethods());
 server.use(router.routes());
+server.use(
+  proxy({
+    host: "http://localhost:8081",
+  })
+);
 server.listen(port, () => {
   console.log(`> Ready on http://localhost:${port}`);
 });
