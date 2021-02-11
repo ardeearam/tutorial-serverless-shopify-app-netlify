@@ -12,7 +12,7 @@ import mount from "koa-mount";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
-const dev = process.env.NODE_ENV !== "production";
+//const dev = process.env.NODE_ENV !== "production";
 //const app = next({
 //  dev,
 //});
