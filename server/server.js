@@ -9,6 +9,7 @@ import Router from "koa-router";
 import session from "koa-session";
 import proxy from "koa-proxy";
 import mount from "koa-mount";
+import serverless from "serverless-http";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -17,13 +18,24 @@ const port = parseInt(process.env.PORT, 10) || 8081;
 //  dev,
 //});
 //const handle = app.getRequestHandler();
-const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
+const {
+  SHOPIFY_API_SECRET,
+  SHOPIFY_API_KEY,
+  SCOPES,
+  REACT_APP_SERVERLESS,
+} = process.env;
 //app.prepare().then(() => {
 const backend = new Koa();
 const frontend = new Koa();
 const app = new Koa();
 const router = new Router();
-const backendPath = "/api";
+let backendPath;
+if (REACT_APP_SERVERLESS) {
+  backendPath = "/.netlify/functions/index";
+} else {
+  backendPath = "/api";
+}
+
 app.use(
   session(
     {
@@ -66,6 +78,10 @@ backend.use(
 // await next();
 //});
 
+router.get("/ping", async (ctx) => {
+  ctx.body = "Pong!";
+});
+
 backend.use(router.allowedMethods());
 backend.use(router.routes());
 app.use(mount(backendPath, backend));
@@ -80,6 +96,9 @@ if (!process.env.REACT_APP_SERVERLESS) {
   app.listen(port, () => {
     console.log(`> Ready on http://localhost:${port}`);
   });
+} else {
+  module.exports = app;
+  module.exports.handler = serverless(app);
 }
 
 //});
