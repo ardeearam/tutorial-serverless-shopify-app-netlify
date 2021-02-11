@@ -1,6 +1,7 @@
 import "@babel/polyfill";
 import dotenv from "dotenv";
-import "isomorphic-fetch";
+//import "isomorphic-fetch";
+import "cross-fetch";
 import createShopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
 import graphQLProxy, { ApiVersion } from "@shopify/koa-shopify-graphql-proxy";
 import Koa from "koa";
