@@ -8,6 +8,7 @@ import Koa from "koa";
 import Router from "koa-router";
 import session from "koa-session";
 import proxy from "koa-proxy";
+import mount from "koa-mount";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -18,21 +19,24 @@ const dev = process.env.NODE_ENV !== "production";
 //const handle = app.getRequestHandler();
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
 //app.prepare().then(() => {
-const server = new Koa();
+const backend = new Koa();
+const frontend = new Koa();
+const app = new Koa();
 const router = new Router();
-const backendPath = "";
-server.use(
+const backendPath = "/api";
+app.use(
   session(
     {
       sameSite: "none",
       secure: true,
     },
-    server
+    app
   )
 );
-server.keys = [SHOPIFY_API_SECRET];
-server.use(
+app.keys = [SHOPIFY_API_SECRET];
+app.use(
   createShopifyAuth({
+    prefix: backendPath,
     apiKey: SHOPIFY_API_KEY,
     secret: SHOPIFY_API_SECRET,
     scopes: [SCOPES],
@@ -40,13 +44,14 @@ server.use(
     async afterAuth(ctx) {
       // Access token and shop available in ctx.state.shopify
       const { shop } = ctx.state.shopify;
+      console.log("Successfully authenticated.");
 
       // Redirect to app with shop parameter upon auth
       ctx.redirect(`/?shop=${shop}`);
     },
   })
 );
-server.use(
+backend.use(
   graphQLProxy({
     version: ApiVersion.October19,
   })
@@ -61,14 +66,20 @@ server.use(
 // await next();
 //});
 
-server.use(router.allowedMethods());
-server.use(router.routes());
-server.use(
-  proxy({
-    host: "http://localhost:8081",
-  })
-);
-server.listen(port, () => {
-  console.log(`> Ready on http://localhost:${port}`);
-});
+backend.use(router.allowedMethods());
+backend.use(router.routes());
+app.use(mount(backendPath, backend));
+
+if (!process.env.REACT_APP_SERVERLESS) {
+  frontend.use(
+    proxy({
+      host: "http://localhost:8081",
+    })
+  );
+  app.use(mount("/", frontend));
+  app.listen(port, () => {
+    console.log(`> Ready on http://localhost:${port}`);
+  });
+}
+
 //});
