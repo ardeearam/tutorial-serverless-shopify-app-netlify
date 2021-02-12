@@ -41,7 +41,8 @@ const App = ({ shop }) => {
           <Layout>
             <Layout.Section>
               <DisplayText size="medium">
-                Please enter your *.myshopify.com URL
+                Please enter your *.myshopify.com URL. This only works for
+                development stores.
               </DisplayText>
               <FormLayout>
                 <TextField
