@@ -6,7 +6,7 @@ import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import queryString from "query-string";
 
 const client = new ApolloClient({
@@ -42,7 +42,9 @@ const ShopifyContainer = ({ children }) => {
           </Provider>
         </AppProvider>
       )}
-      {!shop && <>{children({ shop })}</>}
+      {!shop && (
+        <AppProvider i18n={translations}>{children({ shop })}</AppProvider>
+      )}
     </>
   );
 };
