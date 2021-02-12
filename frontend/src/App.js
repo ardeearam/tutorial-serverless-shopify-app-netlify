@@ -11,10 +11,16 @@ import {
 import { useEffect, useState, useCallback } from "react";
 
 const App = ({ shop }) => {
+  let backendPath;
+  if (process.env.REACT_APP_SERVERLESS) {
+    backendPath = "/.netlify/functions/index";
+  } else {
+    backendPath = "/api";
+  }
   const [url, setUrl] = useState("*.myshopify.com");
   const handleUrlChange = useCallback((_url) => setUrl(_url), []);
   const redirect = () => {
-    window.location = `?shop=${url}`;
+    window.location = `${backendPath}/auth?shop=${url}`;
   };
 
   return (
