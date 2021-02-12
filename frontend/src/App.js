@@ -1,11 +1,21 @@
 import { Heading, Page } from "@shopify/polaris";
-import "@shopify/polaris/dist/styles.css";
-import translations from "@shopify/polaris/locales/en.json";
 
-const App = () => (
-  <Page>
-    <Heading>Shopify app with Node and React 🎉</Heading>
-  </Page>
-);
+const App = ({ shop }) => {
+  return (
+    <>
+      {shop && (
+        <Page>
+          <Heading>Shopify app with Node and React 🎉</Heading>
+        </Page>
+      )}
+
+      {!shop && (
+        <Page>
+          <Heading>Please enter your *.myshopify.com URL</Heading>
+        </Page>
+      )}
+    </>
+  );
+};
 
 export default App;

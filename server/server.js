@@ -21,7 +21,7 @@ const port = parseInt(process.env.PORT, 10) || 8081;
 //const handle = app.getRequestHandler();
 const {
   SHOPIFY_API_SECRET,
-  SHOPIFY_API_KEY,
+  REACT_APP_SHOPIFY_API_KEY,
   SCOPES,
   REACT_APP_SERVERLESS,
 } = process.env;
@@ -50,7 +50,7 @@ app.keys = [SHOPIFY_API_SECRET];
 app.use(
   createShopifyAuth({
     prefix: backendPath,
-    apiKey: SHOPIFY_API_KEY,
+    apiKey: REACT_APP_SHOPIFY_API_KEY,
     secret: SHOPIFY_API_SECRET,
     scopes: [SCOPES],
 
